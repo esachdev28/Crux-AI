@@ -4,6 +4,10 @@ export async function POST(request: NextRequest) {
   try {
     const { claimText } = await request.json()
 
+    if (!claimText) {
+      return NextResponse.json({ error: 'Claim text is required' }, { status: 400 })
+    }
+
     // Call Python backend
     const response = await fetch('http://127.0.0.1:8000/api/verify', {
       method: 'POST',
@@ -19,23 +23,27 @@ export async function POST(request: NextRequest) {
 
     const data = await response.json()
     const claim = data.claim
-    // const score = data.score
+    const score = data.score
 
-    // Map to frontend format
+    // Map to frontend format expected by fact-check widget
     const result = {
-      claimId: claim.id,
-      isFactChecked: true,
+      claim: claim.text,
+      status: claim.status.toUpperCase(),
+      confidence: Math.round(claim.credibility_score || 0),
       sources: claim.evidence_list.map((e: any) => ({
         name: e.source,
-        url: e.url || '',
-        reliability: e.confidence
+        credibility: e.confidence * 10 || 0
       })),
-      similarClaims: [] // Backend doesn't return similar claims yet
+      explanation: claim.explanation || score.explanation || 'No explanation available',
+      credibilityScore: ((claim.credibility_score || 0) / 10).toFixed(1)
     }
 
     return NextResponse.json(result)
   } catch (error) {
     console.error('Verification error:', error)
-    return NextResponse.json({ error: 'Verification failed' }, { status: 500 })
+    return NextResponse.json({
+      error: 'Verification failed',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 })
   }
 }

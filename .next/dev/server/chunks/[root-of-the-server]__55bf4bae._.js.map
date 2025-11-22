@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 46, "column": 0}, "map": {"version":3,"sources":["file:///Users/zaheer/Desktop/Crux-AI/app/api/crisis/route.ts"],"sourcesContent":["import { NextRequest, NextResponse } from 'next/server'\n\nexport async function GET(request: NextRequest) {\n  try {\n    const response = await fetch('http://127.0.0.1:8000/api/crisis')\n\n    if (!response.ok) {\n      throw new Error('Backend crisis check failed')\n    }\n\n    const data = await response.json()\n\n    return NextResponse.json({\n      timestamp: data.timestamp,\n      crisisDetected: data.crisis_detected,\n      alerts: data.alerts,\n      recommendedActions: data.recommended_actions,\n    })\n  } catch (error) {\n    console.error('Crisis detection error:', error)\n    return NextResponse.json({ error: 'Crisis detection failed' }, { status: 500 })\n  }\n}\n"],"names":[],"mappings":";;;;AAAA;;AAEO,eAAe,IAAI,OAAoB;IAC5C,IAAI;QACF,MAAM,WAAW,MAAM,MAAM;QAE7B,IAAI,CAAC,SAAS,EAAE,EAAE;YAChB,MAAM,IAAI,MAAM;QAClB;QAEA,MAAM,OAAO,MAAM,SAAS,IAAI;QAEhC,OAAO,+QAAY,CAAC,IAAI,CAAC;YACvB,WAAW,KAAK,SAAS;YACzB,gBAAgB,KAAK,eAAe;YACpC,QAAQ,KAAK,MAAM;YACnB,oBAAoB,KAAK,mBAAmB;QAC9C;IACF,EAAE,OAAO,OAAO;QACd,QAAQ,KAAK,CAAC,2BAA2B;QACzC,OAAO,+QAAY,CAAC,IAAI,CAAC;YAAE,OAAO;QAA0B,GAAG;YAAE,QAAQ;QAAI;IAC/E;AACF"}}]
+}

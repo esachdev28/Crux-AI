@@ -29,12 +29,26 @@ export default function FactCheckWidget() {
       const res = await fetch('/api/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ claim: input }),
+        body: JSON.stringify({ claimText: input }),
       })
+
+      if (!res.ok) {
+        throw new Error('Verification failed')
+      }
+
       const data = await res.json()
       setResult(data)
     } catch (error) {
       console.error('Verification error:', error)
+      // Set error state
+      setResult({
+        claim: input,
+        status: 'UNVERIFIED',
+        confidence: 0,
+        sources: [],
+        explanation: 'Verification failed. Please try again.',
+        credibilityScore: '0'
+      })
     } finally {
       setLoading(false)
     }
@@ -77,8 +91,8 @@ export default function FactCheckWidget() {
                   result.status === 'TRUE'
                     ? 'bg-green-500/20 text-green-400'
                     : result.status === 'FALSE'
-                    ? 'bg-red-500/20 text-red-400'
-                    : 'bg-yellow-500/20 text-yellow-400'
+                      ? 'bg-red-500/20 text-red-400'
+                      : 'bg-yellow-500/20 text-yellow-400'
                 }
               >
                 {result.status}
