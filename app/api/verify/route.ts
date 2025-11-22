@@ -1,30 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { VerifyAgent } from '@/lib/agents/verify-agent'
 
 export async function POST(request: NextRequest) {
   try {
-    const { claim } = await request.json()
+    const { claimText } = await request.json()
+    const agent = new VerifyAgent()
+    const result = await agent.verify(claimText)
 
-    if (!claim) {
-      return NextResponse.json({ error: 'Claim text required' }, { status: 400 })
-    }
-
-    // Simulate fact-checking workflow
-    const verification = {
-      claim,
-      status: simulateFactCheck(claim),
-      confidence: Math.floor(Math.random() * 100),
-      sources: generateSources(),
-      explanation: generateExplanation(claim),
-      credibilityScore: (6 + Math.random() * 4).toFixed(1),
-    }
-
-    return NextResponse.json(verification)
+    return NextResponse.json(result)
   } catch (error) {
     return NextResponse.json({ error: 'Verification failed' }, { status: 500 })
   }
-}
-
-function simulateFactCheck(claim: string): 'TRUE' | 'FALSE' | 'MIXED' | 'UNVERIFIED' {
   const statuses: Array<'TRUE' | 'FALSE' | 'MIXED' | 'UNVERIFIED'> = [
     'TRUE',
     'FALSE',

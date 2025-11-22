@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ChevronDown, Share2, Eye } from 'lucide-react'
+import CredibilityRadar from '../scoring/credibility-radar'
 
 interface Claim {
   id: string
@@ -42,7 +43,7 @@ export default function ClaimCard({ claim }: { claim: Claim }) {
           <span>•</span>
           <span>{claim.timestamp}</span>
         </div>
-        
+
         {/* Confidence Meter */}
         <div className="flex items-center gap-2">
           <div className="w-16 h-1 rounded-full bg-background/50 border border-border/30 overflow-hidden">
@@ -56,9 +57,24 @@ export default function ClaimCard({ claim }: { claim: Claim }) {
       </div>
 
       {expanded && (
-        <div className="pt-3 border-t border-border/30 space-y-2 text-xs text-muted-foreground">
-          <p>Evidence sources analyzed: 12</p>
-          <p>Credibility score: {(7 + Math.random() * 2).toFixed(1)}/10</p>
+        <div className="pt-3 border-t border-border/30 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2 text-xs text-muted-foreground">
+              <p className="font-semibold text-foreground">Analysis Summary</p>
+              <p>Evidence sources analyzed: {Math.floor(Math.random() * 10) + 5}</p>
+              <p>Credibility score: {(claim.confidence / 10).toFixed(1)}/10</p>
+              <p>Primary Source: {claim.source}</p>
+            </div>
+            <div className="h-[200px]">
+              <CredibilityRadar metrics={{
+                sourceReliability: Math.random() * 10,
+                evidenceStrength: Math.random() * 10,
+                trustworthiness: Math.random() * 10,
+                consistency: Math.random() * 10,
+                expertConsensus: Math.random() * 10
+              }} />
+            </div>
+          </div>
         </div>
       )}
 
