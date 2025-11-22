@@ -1,0 +1,14 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/agents/page": "app/agents/page.js",
+  "/api/crisis/route": "app/api/crisis/route.js",
+  "/api/explain/route": "app/api/explain/route.js",
+  "/api/scan/route": "app/api/scan/route.js",
+  "/api/score/route": "app/api/score/route.js",
+  "/api/verify/route": "app/api/verify/route.js",
+  "/crisis/page": "app/crisis/page.js",
+  "/evidence/page": "app/evidence/page.js",
+  "/page": "app/page.js",
+  "/scoring/page": "app/scoring/page.js"
+}

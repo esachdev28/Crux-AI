@@ -1,45 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { ScoreAgent, ScoreInput } from '@/lib/agents/score-agent'
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { claimId, claimText, source, evidence } = body
 
-    // Initialize Agent
-    const agent = new ScoreAgent()
+    const response = await fetch('http://127.0.0.1:8000/api/score', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        claim_id: claimId,
+        claim_text: claimText || "Unknown Claim",
+        evidence: evidence || []
+      }),
+    })
 
-    // Prepare input (mocking evidence if not provided for demo purposes)
-    const scoreInput: ScoreInput = {
-      claimText: claimText || "Unknown Claim",
-      source: source || "Unknown Source",
-      evidence: evidence || [
-        // Mock evidence if none provided, to show the scoring working
-        { source: 'reuters.com', content: 'Verified by Reuters', sentiment: 'support', confidence: 0.9 },
-        { source: 'twitter.com', content: 'Random tweet', sentiment: 'neutral', confidence: 0.4 }
-      ]
+    if (!response.ok) {
+      throw new Error('Backend scoring failed')
     }
 
-    const result = agent.calculateScore(scoreInput)
+    const result = await response.json()
 
-    // Format response to match what the frontend expects (or update frontend)
-    // The frontend expects: sourceReliabilityScore, evidenceStrengthScore, etc.
-    // Our agent returns a 'breakdown' object. We should map it.
-
-    const response = {
-      claimId,
-      sourceReliabilityScore: (result.breakdown.sourceReliability / 10).toFixed(1),
-      evidenceStrengthScore: (result.breakdown.evidenceStrength / 10).toFixed(1),
-      historicalTrustworthinessScore: (result.breakdown.trustworthiness / 10).toFixed(1),
-      sentimentAnalysis: 'neutral', // Agent could return this too
+    // Map backend response to frontend format
+    const mappedResponse = {
+      claimId: result.claim_id,
+      sourceReliabilityScore: (result.breakdown.source_reliability / 10).toFixed(1),
+      evidenceStrengthScore: (result.breakdown.evidence_strength / 10).toFixed(1),
+      historicalTrustworthinessScore: (result.breakdown.consistency / 10).toFixed(1),
+      sentimentAnalysis: 'neutral',
       stanceDetection: 'neutral',
-      finalCredibilityScore: (result.finalCredibilityScore / 10).toFixed(1),
+      finalCredibilityScore: (result.final_score / 10).toFixed(1),
       recommendation: result.verdict === 'VERIFIED' ? 'mark_as_checked' : 'verify',
-      breakdown: result.breakdown, // Pass full breakdown for advanced UI
+      breakdown: result.breakdown,
       explanation: result.explanation
     }
 
-    return NextResponse.json(response)
+    return NextResponse.json(mappedResponse)
   } catch (error) {
     console.error('Scoring error:', error)
     return NextResponse.json({ error: 'Scoring failed' }, { status: 500 })

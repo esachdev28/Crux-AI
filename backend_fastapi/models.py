@@ -37,3 +37,17 @@ class ScoreResponse(BaseModel):
     breakdown: Dict[str, float]
     verdict: str
     explanation: str
+
+class VerifyRequest(BaseModel):
+    text: str
+
+class ExplainRequest(BaseModel):
+    claim_text: str
+    verdict: str
+    lang: str = "en"
+
+class CrisisResponse(BaseModel):
+    timestamp: datetime = Field(default_factory=datetime.now)
+    crisis_detected: bool
+    alerts: List[str]
+    recommended_actions: List[str]

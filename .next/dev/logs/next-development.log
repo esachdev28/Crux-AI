@@ -1,0 +1,47 @@
+[00:00:00.534] Server  LOG      ✓ Ready in 355ms
+[00:00:15.284] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:15.507] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <div className="min-h-scre...">
+      <Navigation>
+      <Header>
+      <Dashboard>
+        <main className="max-w-7xl ...">
+          <CrisisStats>
+          <div className="grid grid-...">
+            <div className="lg:col-span-2">
+              <MisinformationFeed claims={[...]}>
+                <Card className="border-bor...">
+                  <div data-slot="card" className="text-card-...">
+                    <CardHeader>
+                    <CardContent className="pt-4">
+                      <div data-slot="card-content" className="px-6 pt-4">
+                        <div className="space-y-3">
+                          <ClaimCard claim={{id:"claim-...", ...}}>
+                            <div className="p-4 rounde...">
+                              <div className="flex items...">
+                                <div className="flex-1 min...">
+                                  <p className="text-sm text-foreground line-clamp-2">
++                                   International trade agreement finalized
+-                                   Tech company announces revolutionary breakthrough
+                                ...
+                              ...
+                          ...
+            ...
+
+[00:00:15.507] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:15.507] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:00:15.507] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:00:15.507] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","r":"","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1763822723438}
+[00:00:15.507] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1763822723438}

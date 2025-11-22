@@ -1,0 +1,14 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/agents/page": "/agents",
+  "/api/crisis/route": "/api/crisis",
+  "/api/explain/route": "/api/explain",
+  "/api/scan/route": "/api/scan",
+  "/api/score/route": "/api/score",
+  "/api/verify/route": "/api/verify",
+  "/crisis/page": "/crisis",
+  "/evidence/page": "/evidence",
+  "/page": "/",
+  "/scoring/page": "/scoring"
+}
